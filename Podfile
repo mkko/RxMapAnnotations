@@ -8,5 +8,5 @@ target 'RxMapAnnotations' do
   # Pods for RxMapAnnotations
     pod 'RxSwift',    '~> 4.0'
     pod 'RxCocoa',    '~> 4.0'
-
+    pod "RxMKMapView"
 end

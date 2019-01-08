@@ -12,6 +12,8 @@
 		2B3ED5E721E5102000F6B6C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED5E521E5102000F6B6C5 /* Main.storyboard */; };
 		2B3ED5E921E5102300F6B6C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED5E821E5102300F6B6C5 /* Assets.xcassets */; };
 		2B3ED5EC21E5102300F6B6C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED5EA21E5102300F6B6C5 /* LaunchScreen.storyboard */; };
+		2B3ED5FB21E521E300F6B6C5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */; };
+		2B3ED60421E542F700F6B6C5 /* simplemaps-worldcities-basic.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */; };
 		322A241C7CA6AC882A82E20C /* Pods_RxMapAnnotations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */; };
 /* End PBXBuildFile section */
 
@@ -24,6 +26,8 @@
 		2B3ED5E821E5102300F6B6C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		2B3ED5EB21E5102300F6B6C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		2B3ED5ED21E5102300F6B6C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "simplemaps-worldcities-basic.csv"; sourceTree = "<group>"; };
 		C0C694143ED8BC5C2C88DBAB /* Pods-RxMapAnnotations.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMapAnnotations.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxMapAnnotations/Pods-RxMapAnnotations.debug.xcconfig"; sourceTree = "<group>"; };
 		CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMapAnnotations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -33,6 +37,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B3ED5FB21E521E300F6B6C5 /* MapKit.framework in Frameworks */,
 				322A241C7CA6AC882A82E20C /* Pods_RxMapAnnotations.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -66,6 +71,7 @@
 				2B3ED5E521E5102000F6B6C5 /* Main.storyboard */,
 				2B3ED5E821E5102300F6B6C5 /* Assets.xcassets */,
 				2B3ED5EA21E5102300F6B6C5 /* LaunchScreen.storyboard */,
+				2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */,
 				2B3ED5ED21E5102300F6B6C5 /* Info.plist */,
 			);
 			path = RxMapAnnotations;
@@ -83,6 +89,7 @@
 		F9E93FEF1057C704CE8A7817 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */,
 				CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */,
 			);
 			name = Frameworks;
@@ -122,6 +129,11 @@
 				TargetAttributes = {
 					2B3ED5DD21E5102000F6B6C5 = {
 						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Maps.iOS = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -148,6 +160,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B3ED60421E542F700F6B6C5 /* simplemaps-worldcities-basic.csv in Resources */,
 				2B3ED5EC21E5102300F6B6C5 /* LaunchScreen.storyboard in Resources */,
 				2B3ED5E921E5102300F6B6C5 /* Assets.xcassets in Resources */,
 				2B3ED5E721E5102000F6B6C5 /* Main.storyboard in Resources */,
@@ -168,6 +181,7 @@
 				"${SRCROOT}/Pods/Target Support Files/Pods-RxMapAnnotations/Pods-RxMapAnnotations-frameworks.sh",
 				"${BUILT_PRODUCTS_DIR}/RxAtomic/RxAtomic.framework",
 				"${BUILT_PRODUCTS_DIR}/RxCocoa/RxCocoa.framework",
+				"${BUILT_PRODUCTS_DIR}/RxMKMapView/RxMKMapView.framework",
 				"${BUILT_PRODUCTS_DIR}/RxSwift/RxSwift.framework",
 			);
 			name = "[CP] Embed Pods Frameworks";
@@ -176,6 +190,7 @@
 			outputPaths = (
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxAtomic.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxCocoa.framework",
+				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxMKMapView.framework",
 				"${TARGET_BUILD_DIR}/${FRAMEWORKS_FOLDER_PATH}/RxSwift.framework",
 			);
 			runOnlyForDeploymentPostprocessing = 0;

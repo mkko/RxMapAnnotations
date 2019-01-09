@@ -14,6 +14,7 @@
 		2B3ED5EC21E5102300F6B6C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED5EA21E5102300F6B6C5 /* LaunchScreen.storyboard */; };
 		2B3ED5FB21E521E300F6B6C5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */; };
 		2B3ED60421E542F700F6B6C5 /* simplemaps-worldcities-basic.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */; };
+		2B3ED60621E5436700F6B6C5 /* RxMapAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3ED60521E5436700F6B6C5 /* RxMapAnnotations.swift */; };
 		322A241C7CA6AC882A82E20C /* Pods_RxMapAnnotations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		2B3ED5ED21E5102300F6B6C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "simplemaps-worldcities-basic.csv"; sourceTree = "<group>"; };
+		2B3ED60521E5436700F6B6C5 /* RxMapAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMapAnnotations.swift; sourceTree = "<group>"; };
 		C0C694143ED8BC5C2C88DBAB /* Pods-RxMapAnnotations.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMapAnnotations.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxMapAnnotations/Pods-RxMapAnnotations.debug.xcconfig"; sourceTree = "<group>"; };
 		CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMapAnnotations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -68,6 +70,7 @@
 			children = (
 				2B3ED5E121E5102000F6B6C5 /* AppDelegate.swift */,
 				2B3ED5E321E5102000F6B6C5 /* ViewController.swift */,
+				2B3ED60521E5436700F6B6C5 /* RxMapAnnotations.swift */,
 				2B3ED5E521E5102000F6B6C5 /* Main.storyboard */,
 				2B3ED5E821E5102300F6B6C5 /* Assets.xcassets */,
 				2B3ED5EA21E5102300F6B6C5 /* LaunchScreen.storyboard */,
@@ -227,6 +230,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2B3ED60621E5436700F6B6C5 /* RxMapAnnotations.swift in Sources */,
 				2B3ED5E421E5102000F6B6C5 /* ViewController.swift in Sources */,
 				2B3ED5E221E5102000F6B6C5 /* AppDelegate.swift in Sources */,
 			);

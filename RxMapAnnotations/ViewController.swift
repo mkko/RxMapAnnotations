@@ -27,18 +27,60 @@ class ViewController: UIViewController {
 
         /// Map region change and search into an array of Annotations
         /// and bind these annotations directly into the Map View.
-        mapView.rx.region
+        let annotations = mapView.rx.region
             .withLatestFrom(points) { ($1, $0) }
-            .map { points, region -> [MKAnnotation] in
+            .map { points, region -> [PointOfInterest] in
 
                 return points.filter(region.contains(poi:))
             }
             .asDriver(onErrorJustReturn: [])
-            .drive(mapView.rx.annotations)
+
+        annotations
+            .drive({ o in
+                mapView.rx.annotations2(o)
+            })
             .disposed(by: disposeBag)
+
+
+        /// Original
+//        mapView.rx.region
+//            .withLatestFrom(points) { ($1, $0) }
+//            .map { points, region -> [MKAnnotation] in
+//
+//                return points.filter(region.contains(poi:))
+//                    .map { BoxedAnnotation(original: $0) }
+//            }
+//            .asDriver(onErrorJustReturn: [])
+//            .drive({ o in
+//                mapView.rx.annotations(o)
+//            })
+//            .disposed(by: disposeBag)
+
     }
 }
 
+extension ViewController: MKMapViewDelegate {
+
+    func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
+        if let pin = mapView.dequeueReusableAnnotationView(withIdentifier: "MapAnnotation") as? MKPinAnnotationView {
+            pin.annotation = annotation
+            //pin.animatesDrop = true
+            return pin
+        } else {
+            let pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MapAnnotation")
+            //pin.animatesDrop = true
+            return pin
+        }
+    }
+
+    func mapView(_ mapView: MKMapView, didAdd views: [MKAnnotationView]) {
+        print("")
+    }
+
+    func mapView(_ mapView: MKMapView, clusterAnnotationForMemberAnnotations memberAnnotations: [MKAnnotation]) -> MKClusterAnnotation {
+        return MKClusterAnnotation(memberAnnotations: memberAnnotations)
+    }
+}
 
 func loadPointsOfInterest() -> Single<[PointOfInterest]> {
     print("Loading POIs...")
@@ -74,7 +116,9 @@ func loadPointsOfInterest() -> Single<[PointOfInterest]> {
 
 // MARK: - Map Annotation and Helpers
 
-class PointOfInterest: NSObject, MKAnnotation {
+struct PointOfInterest: IdentifiableAnnotation {
+    var id: String = UUID().uuidString
+
     let coordinate: CLLocationCoordinate2D
     let title: String?
     let subtitle: String?

@@ -31,7 +31,7 @@ extension Reactive where Base: MKMapView {
         (_ source: O)
         -> Disposable
         where O.E == [A] {
-            let ds = RxMapViewReactiveDataSource2<A>()
+            let ds = RxMapViewIdentifiableAnnotationDataSource<A>()
             return self.annotations2(dataSource: ds)(source)
     }
 
@@ -53,7 +53,7 @@ extension Reactive where Base: MKMapView {
 }
 
 
-public class RxMapViewReactiveDataSource2<S: IdentifiableAnnotation>
+public class RxMapViewIdentifiableAnnotationDataSource<S: IdentifiableAnnotation>
 : RxMapViewDataSourceType {
     public typealias Element = S
 

@@ -37,7 +37,7 @@ class ViewController: UIViewController {
 
         annotations
             .drive({ o in
-                mapView.rx.annotations2(o)
+                mapView.rx.annotations(o)
             })
             .disposed(by: disposeBag)
 

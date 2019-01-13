@@ -27,35 +27,14 @@ class ViewController: UIViewController {
 
         /// Map region change and search into an array of Annotations
         /// and bind these annotations directly into the Map View.
-        let annotations = mapView.rx.region
+        mapView.rx.region
             .withLatestFrom(points) { ($1, $0) }
             .map { points, region -> [PointOfInterest] in
-
                 return points.filter(region.contains(poi:))
             }
             .asDriver(onErrorJustReturn: [])
-
-        annotations
-            .drive({ o in
-                mapView.rx.annotations(o)
-            })
+            .drive(mapView.rx.annotations)
             .disposed(by: disposeBag)
-
-
-        /// Original
-//        mapView.rx.region
-//            .withLatestFrom(points) { ($1, $0) }
-//            .map { points, region -> [MKAnnotation] in
-//
-//                return points.filter(region.contains(poi:))
-//                    .map { BoxedAnnotation(original: $0) }
-//            }
-//            .asDriver(onErrorJustReturn: [])
-//            .drive({ o in
-//                mapView.rx.annotations(o)
-//            })
-//            .disposed(by: disposeBag)
-
     }
 }
 

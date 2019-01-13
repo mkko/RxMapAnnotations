@@ -13,18 +13,21 @@ import RxMKMapView
 
 public protocol IdentifiableAnnotation {
 
+    /// The identity of the annotation. This will be used to determine whether
+    /// a given annotation is the same instance.
     var id: String { get }
 
+    /// The coordinates of the map annotation.
     var coordinate: CLLocationCoordinate2D { get }
 
+    /// The title to display for the annotation, same as in MKAnnotation.
     var title: String? { get }
 
+    /// The subtitle to display for the annotation, same as in MKAnnotation.
     var subtitle: String? { get }
 }
 
-extension Reactive where Base: MKMapView {
-
-    //
+public extension Reactive where Base: MKMapView {
 
     public func annotations<
         A: IdentifiableAnnotation,
@@ -53,29 +56,28 @@ extension Reactive where Base: MKMapView {
     }
 }
 
-
 public class RxMapViewIdentifiableAnnotationDataSource<S: IdentifiableAnnotation>
 : RxMapViewDataSourceType {
     public typealias Element = S
 
-    var current: [String: RxAnnotationBox] = [:]
+    var current: [String: _RxAnnotationBox] = [:]
 
     public func mapView(_ mapView: MKMapView, observedEvent: Event<[Element]>) {
         Binder(self) { _, newAnnotations in
             DispatchQueue.main.async {
                 let _start = CFAbsoluteTimeGetCurrent()
 
-                var next: [String: RxAnnotationBox] = [:]
-                var toAdd = [RxAnnotationBox]()
+                var next: [String: _RxAnnotationBox] = [:]
+                var toAdd = [_RxAnnotationBox]()
                 var toRemove = self.current
 
                 for a in newAnnotations {
-                    let boxed: RxAnnotationBox
+                    let boxed: _RxAnnotationBox
                     if let existing = toRemove.removeValue(forKey: a.id) {
                         boxed = existing
                         boxed.update(from: a)
                     } else {
-                        boxed = RxAnnotationBox(original: a)
+                        boxed = _RxAnnotationBox(original: a)
                         toAdd.append(boxed)
                     }
                     next[a.id] = boxed
@@ -93,7 +95,12 @@ public class RxMapViewIdentifiableAnnotationDataSource<S: IdentifiableAnnotation
     }
 }
 
-public class RxAnnotationBox: NSObject, MKAnnotation {
+public protocol RxAnnotation: MKAnnotation {
+
+    var box: IdentifiableAnnotation { get }
+}
+
+internal class _RxAnnotationBox: NSObject, RxAnnotation {
     public var coordinate: CLLocationCoordinate2D
     
     public private(set) var title: String?
@@ -110,7 +117,7 @@ public class RxAnnotationBox: NSObject, MKAnnotation {
     }
 }
 
-fileprivate extension RxAnnotationBox {
+fileprivate extension _RxAnnotationBox {
 
     func update(from annotation: IdentifiableAnnotation) {
         self.box = annotation

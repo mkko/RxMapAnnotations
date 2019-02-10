@@ -29,11 +29,9 @@ class ViewController: UIViewController {
         /// and bind these annotations directly into the Map View.
         mapView.rx.region
             .withLatestFrom(points) { ($1, $0) }
-            .map { points, region -> [PointOfInterest] in
-                return points.filter(region.contains(poi:))
-            }
+            .map { points, region in points.filter(region.contains(poi:)) }
             .asDriver(onErrorJustReturn: [])
-            .drive(mapView.rx.annotations)
+            .drive(mapView.rx.annotations(create: PointOfInterestAnnotation.init))
             .disposed(by: disposeBag)
     }
 }
@@ -43,10 +41,12 @@ extension ViewController: MKMapViewDelegate {
     func mapView(_ mapView: MKMapView, viewFor annotation: MKAnnotation) -> MKAnnotationView? {
         if let pin = mapView.dequeueReusableAnnotationView(withIdentifier: "MapAnnotation") as? MKPinAnnotationView {
             pin.annotation = annotation
+            pin.canShowCallout = true
             //pin.animatesDrop = true
             return pin
         } else {
             let pin = MKPinAnnotationView(annotation: annotation, reuseIdentifier: "MapAnnotation")
+            pin.canShowCallout = true
             //pin.animatesDrop = true
             return pin
         }
@@ -96,7 +96,8 @@ func loadPointsOfInterest() -> Single<[PointOfInterest]> {
 // MARK: - Map Annotation and Helpers
 
 struct PointOfInterest: IdentifiableAnnotation {
-    var id: String = UUID().uuidString
+
+    var annotationID = UUID()
 
     let coordinate: CLLocationCoordinate2D
     let title: String?
@@ -106,6 +107,27 @@ struct PointOfInterest: IdentifiableAnnotation {
         self.title = title
         self.subtitle = subtitle
         self.coordinate = coordinate
+    }
+}
+
+class PointOfInterestAnnotation: NSObject, RxAnnotation {
+
+    @objc var coordinate: CLLocationCoordinate2D
+
+    var box: PointOfInterest
+
+    var title: String? {
+        return self.box.title
+    }
+
+    init(_ annotation: PointOfInterest) {
+        self.box = annotation
+        self.coordinate = annotation.coordinate
+    }
+
+    func update(from annotation: PointOfInterest) {
+        self.box = annotation
+        self.coordinate = annotation.coordinate
     }
 }
 

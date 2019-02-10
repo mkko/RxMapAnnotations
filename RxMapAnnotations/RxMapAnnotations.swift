@@ -11,32 +11,33 @@ import RxSwift
 import RxCocoa
 import RxMKMapView
 
+import MapKit
+import RxSwift
+import RxCocoa
+import RxMKMapView
+
 public protocol IdentifiableAnnotation {
+
+    associatedtype AnnotationID: Hashable
 
     /// The identity of the annotation. This will be used to determine whether
     /// a given annotation is the same instance.
-    var id: String { get }
-
-    /// The coordinates of the map annotation.
-    var coordinate: CLLocationCoordinate2D { get }
-
-    /// The title to display for the annotation, same as in MKAnnotation.
-    var title: String? { get }
-
-    /// The subtitle to display for the annotation, same as in MKAnnotation.
-    var subtitle: String? { get }
+    var annotationID: AnnotationID { get }
 }
 
 public extension Reactive where Base: MKMapView {
 
     public func annotations<
-        A: IdentifiableAnnotation,
+        A: RxAnnotation,
         O: ObservableType>
-        (_ source: O)
+        (create: @escaping (A.Annotation) -> A)
+        -> (_ source: O)
         -> Disposable
-        where O.E == [A] {
-            let ds = RxMapViewIdentifiableAnnotationDataSource<A>()
-            return self.annotations(dataSource: ds)(source)
+        where O.E == [A.Annotation] {
+            return { source in
+                let ds = RxMapViewIdentifiableAnnotationDataSource<A>(create: create)
+                return self.annotations(dataSource: ds)(source)
+            }
     }
 
     public func annotations<
@@ -56,37 +57,41 @@ public extension Reactive where Base: MKMapView {
     }
 }
 
-public class RxMapViewIdentifiableAnnotationDataSource<S: IdentifiableAnnotation>
-: RxMapViewDataSourceType {
-    public typealias Element = S
+public class RxMapViewIdentifiableAnnotationDataSource<A: RxAnnotation>: RxMapViewDataSourceType {
 
-    var current: [String: _RxAnnotationBox] = [:]
+    init(create: @escaping (A.Annotation) -> A) {
+        self.create = create
+    }
 
-    public func mapView(_ mapView: MKMapView, observedEvent: Event<[Element]>) {
+    var create: (A.Annotation) -> A
+
+    var current: [A.Annotation.AnnotationID: A] = [:]
+
+    public func mapView(_ mapView: MKMapView, observedEvent: Event<[A.Annotation]>) {
         Binder(self) { _, newAnnotations in
             DispatchQueue.main.async {
-                let _start = CFAbsoluteTimeGetCurrent()
+                //let _start = CFAbsoluteTimeGetCurrent()
 
-                var next: [String: _RxAnnotationBox] = [:]
-                var toAdd = [_RxAnnotationBox]()
+                var next: [A.Annotation.AnnotationID: A] = [:]
+                var toAdd = [A]()
                 var toRemove = self.current
 
                 for a in newAnnotations {
-                    let boxed: _RxAnnotationBox
-                    if let existing = toRemove.removeValue(forKey: a.id) {
+                    let boxed: A
+                    if let existing = toRemove.removeValue(forKey: a.annotationID) {
                         boxed = existing
                         boxed.update(from: a)
                     } else {
-                        boxed = _RxAnnotationBox(original: a)
+                        boxed = self.create(a)
                         toAdd.append(boxed)
                     }
-                    next[a.id] = boxed
+                    next[a.annotationID] = boxed
                 }
 
                 self.current = next
 
-                let _diff = CFAbsoluteTimeGetCurrent() - _start
-                print("Elapsed time: \(_diff) seconds")
+                //let _diff = CFAbsoluteTimeGetCurrent() - _start
+                //print("Elapsed time: \(_diff) seconds")
 
                 mapView.addAnnotations(toAdd)
                 mapView.removeAnnotations(Array(toRemove.values))
@@ -97,32 +102,9 @@ public class RxMapViewIdentifiableAnnotationDataSource<S: IdentifiableAnnotation
 
 public protocol RxAnnotation: MKAnnotation {
 
-    var box: IdentifiableAnnotation { get }
-}
+    associatedtype Annotation: IdentifiableAnnotation
 
-internal class _RxAnnotationBox: NSObject, RxAnnotation {
-    public var coordinate: CLLocationCoordinate2D
-    
-    public private(set) var title: String?
+    var box: Annotation { get }
 
-    public private(set) var subtitle: String?
-
-    public private(set) var box: IdentifiableAnnotation
-
-    init(original: IdentifiableAnnotation) {
-        self.box = original
-        self.coordinate = original.coordinate
-        self.title = original.title
-        self.subtitle = original.subtitle
-    }
-}
-
-fileprivate extension _RxAnnotationBox {
-
-    func update(from annotation: IdentifiableAnnotation) {
-        self.box = annotation
-        self.coordinate = box.coordinate
-        self.title = box.title
-        self.subtitle = box.subtitle
-    }
+    func update(from annotation: Annotation)
 }

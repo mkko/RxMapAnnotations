@@ -16,6 +16,7 @@
 		2B3ED60421E542F700F6B6C5 /* simplemaps-worldcities-basic.csv in Resources */ = {isa = PBXBuildFile; fileRef = 2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */; };
 		2B3ED60621E5436700F6B6C5 /* RxMapAnnotations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2B3ED60521E5436700F6B6C5 /* RxMapAnnotations.swift */; };
 		322A241C7CA6AC882A82E20C /* Pods_RxMapAnnotations.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */; };
+		C030B99D22180E34008300B4 /* README.md in Resources */ = {isa = PBXBuildFile; fileRef = C030B99C22180E34008300B4 /* README.md */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -30,6 +31,7 @@
 		2B3ED5FA21E521E300F6B6C5 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		2B3ED60321E542F700F6B6C5 /* simplemaps-worldcities-basic.csv */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = "simplemaps-worldcities-basic.csv"; sourceTree = "<group>"; };
 		2B3ED60521E5436700F6B6C5 /* RxMapAnnotations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RxMapAnnotations.swift; sourceTree = "<group>"; };
+		C030B99C22180E34008300B4 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		C0C694143ED8BC5C2C88DBAB /* Pods-RxMapAnnotations.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-RxMapAnnotations.debug.xcconfig"; path = "Pods/Target Support Files/Pods-RxMapAnnotations/Pods-RxMapAnnotations.debug.xcconfig"; sourceTree = "<group>"; };
 		CFE7864BC4F5DE1D50EA07E6 /* Pods_RxMapAnnotations.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_RxMapAnnotations.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
@@ -50,6 +52,7 @@
 		2B3ED5D521E5102000F6B6C5 = {
 			isa = PBXGroup;
 			children = (
+				C030B99C22180E34008300B4 /* README.md */,
 				2B3ED5E021E5102000F6B6C5 /* RxMapAnnotations */,
 				2B3ED5DF21E5102000F6B6C5 /* Products */,
 				C89CFE0CCB1B6550955DD8AC /* Pods */,
@@ -165,6 +168,7 @@
 			files = (
 				2B3ED60421E542F700F6B6C5 /* simplemaps-worldcities-basic.csv in Resources */,
 				2B3ED5EC21E5102300F6B6C5 /* LaunchScreen.storyboard in Resources */,
+				C030B99D22180E34008300B4 /* README.md in Resources */,
 				2B3ED5E921E5102300F6B6C5 /* Assets.xcassets in Resources */,
 				2B3ED5E721E5102000F6B6C5 /* Main.storyboard in Resources */,
 			);

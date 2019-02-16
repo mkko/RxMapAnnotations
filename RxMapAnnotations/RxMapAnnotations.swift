@@ -11,11 +11,6 @@ import RxSwift
 import RxCocoa
 import RxMKMapView
 
-import MapKit
-import RxSwift
-import RxCocoa
-import RxMKMapView
-
 public protocol IdentifiableAnnotation {
 
     associatedtype AnnotationID: Hashable
@@ -27,7 +22,7 @@ public protocol IdentifiableAnnotation {
 
 public extension Reactive where Base: MKMapView {
 
-    public func annotations<
+    public func items<
         A: RxAnnotation,
         O: ObservableType>
         (create: @escaping (A.Annotation) -> A)
@@ -36,11 +31,11 @@ public extension Reactive where Base: MKMapView {
         where O.E == [A.Annotation] {
             return { source in
                 let ds = RxMapViewIdentifiableAnnotationDataSource<A>(create: create)
-                return self.annotations(dataSource: ds)(source)
+                return self.items(dataSource: ds)(source)
             }
     }
 
-    public func annotations<
+    public func items<
         DataSource: RxMapViewDataSourceType,
         O: ObservableType>
         (dataSource: DataSource)
@@ -55,6 +50,20 @@ public extension Reactive where Base: MKMapView {
                     })
             }
     }
+
+    public func didSelectItem<T: RxAnnotation>(ofMappedType: T.Type) -> Observable<T.Annotation> {
+        return self.didSelectAnnotationView
+            .filter { $0.annotation is T }
+            .map { ($0.annotation as! T).box }
+    }
+
+//    public func selectedItem<T: RxAnnotation>(ofMappedType: T.Type) -> Observable<T.Annotation?> {
+//        return Observable.merge(
+//            self.didSelectAnnotationView.map { ($0.annotation as? T)?.box },
+//            self.didDeselectAnnotationView.map { _ in nil }
+//            ).share()
+//    }
+
 }
 
 public class RxMapViewIdentifiableAnnotationDataSource<A: RxAnnotation>: RxMapViewDataSourceType {
@@ -77,15 +86,15 @@ public class RxMapViewIdentifiableAnnotationDataSource<A: RxAnnotation>: RxMapVi
                 var toRemove = self.current
 
                 for a in newAnnotations {
-                    let boxed: A
+                    let mapped: A
                     if let existing = toRemove.removeValue(forKey: a.annotationID) {
-                        boxed = existing
-                        boxed.update(from: a)
+                        mapped = existing
+                        mapped.update(from: a)
                     } else {
-                        boxed = self.create(a)
-                        toAdd.append(boxed)
+                        mapped = self.create(a)
+                        toAdd.append(mapped)
                     }
-                    next[a.annotationID] = boxed
+                    next[a.annotationID] = mapped
                 }
 
                 self.current = next

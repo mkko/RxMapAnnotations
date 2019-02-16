@@ -29,9 +29,14 @@ class ViewController: UIViewController {
         /// and bind these annotations directly into the Map View.
         mapView.rx.region
             .withLatestFrom(points) { ($1, $0) }
-            .map { points, region in points.filter(region.contains(poi:)) }
+            .map { (points, region) in points.filter(region.contains(poi:)) }
             .asDriver(onErrorJustReturn: [])
-            .drive(mapView.rx.annotations(create: PointOfInterestAnnotation.init))
+            .drive(mapView.rx.items(create: PointOfInterestAnnotation.init))
+            .disposed(by: disposeBag)
+
+        mapView.rx.didSelectItem(ofMappedType: PointOfInterestAnnotation.self)
+            .debug("didSelectItem", trimOutput: true)
+            .subscribe()
             .disposed(by: disposeBag)
     }
 }
